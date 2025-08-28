@@ -1,6 +1,9 @@
 import authRouter from './routes/authentication_router.js'
 import express from 'express'
 
+import { PrismaClient } from './generated/prisma/index.js';
+
+const prisma = new PrismaClient();
 const app = express();
 const port = 3000;
 
