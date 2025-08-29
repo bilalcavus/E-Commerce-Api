@@ -1,5 +1,5 @@
-import express from 'express';
 import bcrypt from 'bcrypt';
+import express from 'express';
 import { PrismaClient } from '../generated/prisma/index.js';
 
 const prisma = new PrismaClient();
@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
     try {
-        const {email, password} = req.body;
+        const {name, email, password} = req.body;
 
         const existingUser = await prisma.user.findUnique({
             where: { email }
@@ -22,9 +22,11 @@ router.post('/register', async (req, res) => {
         
         const user = await prisma.user.create({
             data: {
+                name,
                 email,
                 password: hashedPassword,
             }
+
         });
         const { password: _, ...userWithoutPassword } = user;
         res.status(201).json(userWithoutPassword);
@@ -61,4 +63,4 @@ router.post('/login', async (req, res) => {
     }
 });
 
-export default router; 
+export default router;

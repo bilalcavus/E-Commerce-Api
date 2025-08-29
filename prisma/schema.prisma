@@ -9,8 +9,36 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  Products Products[]
+}
+
+model Categories {
+  id        String @id @default(uuid())
+  name      String
+  parent_id String?
+  parent    Categories? @relation("CategoryHierarchy", fields: [parent_id], references: [id])
+  children  Categories[] @relation("CategoryHierarchy")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Products Products[]
+}
+
+model Products {
+  id            String @id @default(uuid())
+  name          String
+  description   String
+  price         Int
+  stockQuantity Int
+  categoryId    String
+  category      Categories @relation(fields: [categoryId], references: [id])
+  vendorId      String
+  vendor        User @relation(fields: [vendorId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
 }
