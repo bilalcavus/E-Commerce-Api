@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "public"."User" ADD COLUMN     "address" TEXT,
+ADD COLUMN     "phone" TEXT,
+ADD COLUMN     "role" TEXT NOT NULL DEFAULT 'user',
+ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

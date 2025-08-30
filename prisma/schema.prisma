@@ -10,9 +10,15 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
+  name      String   @default("")
+  surname   String?
   email     String   @unique
   password  String
+  role      String   @default("user")
+  phone     String?
+  address   String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   Products Products[]
 }
