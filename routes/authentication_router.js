@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import express from 'express';
 import { PrismaClient } from '../generated/prisma/index.js';
+import { verifyToken } from '../middlewares/auth.js';
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -56,7 +58,17 @@ router.post('/login', async (req, res) => {
 
 
         const { password: _, ...userWithoutPassword } = user;
-        res.status(200).json(userWithoutPassword);
+
+        const token = jwt.sign(
+            {
+                id: user.id, email: user.email
+            }, process.env.JWT_SCRET, {expiresIn: "1h"}
+        );
+        res.status(200).json({
+            message: "Login successful",
+            user: userWithoutPassword,
+            token: token
+        });
     } catch (error) {
         console.log('Login error', error);
         res.status(500).json({message: 'Giriş hatası'});
